@@ -15,24 +15,41 @@ display_texts = {
 # Bitmap: EMF5, Box, Prints, Orbs, Writing, Temps
 
 possibilities = {
-  "Spirit": 0b011010,
-  "Shade": 0b100110,
-  "Poltergeist": 0b011100,
-  "Jinn": 0b110100,
-  "Mare": 0b010101,
-  "Phantom": 0b100101,
-  "Wraith": 0b011001,
-  "Banshee": 0b101001,
-  "Revenant": 0b101010,
-  "Yurei": 0b000111,
-  "Oni": 0b110010,
-  "Demon": 0b010011,
+  "Spirit": "011010",
+  "Shade": "100110",
+  "Poltergeist": "011100",
+  "Jinn": "110100",
+  "Mare": "010101",
+  "Phantom": "100101",
+  "Wraith": "011001",
+  "Banshee": "101001",
+  "Revenant": "101010",
+  "Yurei": "000111",
+  "Oni": "110010",
+  "Demon": "010011",
 }
+
+def vartrace(name, indx, op):
+  fullist = set(possibilities.keys())
+  compstr = ""
+  # Make a string representing the checkbox values as 0s and 1s
+  for v in chkvars:
+    compstr + = str(v.get())
+  # Go through our checkbox values, and remove anything from the possibilities if we've checked that box but that ghost doesn't want that sign.
+  for i in range(len(compstr)):
+    if compstr[i] == "0": continue
+    complist = fullist
+    for g in complist:
+      if not compstr[i] == possibilities[g][i]:
+        fullist.remove(g)
+  # Now update the display list
+
 
 signs = tk.LabelFrame(rootwin, text="Evidence")
 chkvars = []
 for k, v in display_texts.items():
   newvar = tk.IntVar()
+  newvar.trace("w", vartrace)
   chk = tk.Checkbutton(signs, text=k, variable=newvar)
   chk.grid(row=len(chkvars), column=0)
   txt = tk.Label(signs, text=v)
