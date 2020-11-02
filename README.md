@@ -1,3 +1,3 @@
 # HelpingHand
 
-Helper tool for Phasmophobia. Not functional at all just yet. Check again later maybe?
+Helper tool for Phasmophobia. Check the boxes when you find evidence, and the possibilities list will shrink.
