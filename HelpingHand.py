@@ -77,6 +77,13 @@ for k, v in display_texts.items():
   txt.grid(row=len(chkvars), column=1, sticky=tk.E)
   chkvars.append(newvar)
 
+def reset_evidence():
+  for i in chkvars:
+    i.set(0)
+
+b = tk.Button(signs, text="Reset", command=reset_evidence)
+b.grid(sticky=tk.W)
+
 # Changing amounts of possibilities causes window size changes. Not the nicest things.
 rootwin.resizable(tk.FALSE, tk.FALSE)
 rootwin.update()
