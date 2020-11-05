@@ -1,8 +1,19 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
+from tkinter import filedialog
+import configparser, os, shutil
+from datetime import datetime
+from watchdog.observers import Observer
+from watchdog import events as watchevents
+
 rootwin = tk.Tk()
 rootwin.title("HelpingHand - for Phasmophobia")
+
+tabs = ttk.Notebook(rootwin)
+tabs.pack()
+diagnosis = tk.Frame(tabs)
+tabs.add(diagnosis, text="Diagnosis")
 
 display_texts = {
   "EMF Level 5": "All lights on the EMP will illuminate.",
@@ -30,9 +41,9 @@ possibilities = {
   "Demon": ["010011", "Highly aggressive. Crucifix is recommended. No penalty to sanity when using Ouiji board and it cooperates."],
 }
 
-signs = tk.LabelFrame(rootwin, text="Evidence")
+signs = tk.LabelFrame(diagnosis, text="Evidence")
 signs.grid(row=0)
-type_list = tk.LabelFrame(rootwin, text="Possibilities")
+type_list = tk.LabelFrame(diagnosis, text="Possibilities")
 label_dictionary = {}
 for k, v in possibilities.items():
   label_dictionary[k] = [None, None]
@@ -84,6 +95,88 @@ def reset_evidence():
 b = tk.Button(signs, text="Reset", command=reset_evidence)
 b.grid(sticky=tk.W)
 
+configf = configparser.ConfigParser(defaults={"s_directory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Phasmophobia", "d_Directory": os.path.expanduser('~') + "\\Pictures", "copy_pictures": "0"})
+if os.path.isfile("settings.ini"):
+  configf.read("settings.ini")
+else:
+  with open("settings.ini", "w") as f:
+    configf.write(f)
+config = {}
+for i in configf.items(section="DEFAULT"):
+  config[i[0]] = i[1]
+  print("Config: {}".format(i))
+
+pictures = tk.Frame(tabs)
+tabs.add(pictures, text="Pictures")
+
+def choose_which(which):
+  if which == "s":
+    ask = "Please select game folder."
+    init = "s_directory"
+  else:
+    ask = "Please select save folder."
+    init = "d_directory"
+  folder = filedialog.askdirectory(title=ask, initialdir=config[init], mustexist=True)
+  if not os.path.isdir(folder):
+    print("Not folder: '{}'".format(folder))
+  config[init] = folder
+  save_config(config)
+
+# Define here instead of lower so invalid folder messages show.
+disp_pic = tk.Label(pictures, text="Picture copying wasn't enabled.") # Intentionally not "is" to differentiate with startup text.
+
+# Define here so save_config treats as global
+folders_ok = 0
+
+def save_config(config):
+  global folders_ok
+  configf.update({"DEFAULT": config})
+  with open("settings.ini", "w") as f:
+    configf.write(f)
+  for i in configf.items(section="DEFAULT"):
+    print("New config: {}".format(i))
+
+  disp_pic.config(text="Game or destination folder invalid.")
+  if not os.path.isdir(config["s_directory"]):
+    disp_pic.config(text="Game folder invalid.")
+    folders_ok = 0
+  if not os.path.isdir(config["d_directory"]):
+    disp_pic.config(text="Destination folder invalid.")
+    folders_ok = 0
+  else:
+    folders_ok = 1
+
+def choose_s():
+  choose_which("s")
+
+def choose_d():
+  choose_which("d")
+
+filewatch = None
+
+def set_pictures_active():
+  global filewatch
+  config["copy_pictures"] = pic_checkbox.get()
+  save_config(config)
+
+  if str(config["copy_pictures"]) == "1" and folders_ok:
+    if filewatch is None:
+      filewatch = FileEventHandler(config["s_directory"])
+    print("Watching for new PNGs now enabled. Folder: {}".format(config["s_directory"]))
+    disp_pic.config(text="Watching the game folder for pictures...") # Intentionally not "new" pictures to differentiate with startup text.
+  elif folders_ok:
+    disp_pic.config(text="Picture copying disabled.")
+    if not filewatch is None:
+      filewatch.stop()
+
+tk.Label(pictures, text="Pictures taken by the in-game photo camera can be copied to a folder of your choice.\nThis program must be open for this to occur.").pack()
+pic_checkbox = tk.IntVar()
+pic_checkbox.set(int(config["copy_pictures"]))
+tk.Checkbutton(pictures, text="Enable this!", command=set_pictures_active, variable=pic_checkbox).pack()
+tk.Button(pictures, text="Select game folder.", command=choose_s).pack()
+tk.Button(pictures, text="Select destination folder.", command=choose_d).pack()
+disp_pic.pack()
+
 # Changing amounts of possibilities causes window size changes. Not the nicest things.
 rootwin.resizable(tk.FALSE, tk.FALSE)
 rootwin.update()
@@ -91,4 +184,40 @@ rootwin.update()
 type_list.grid_propagate(False)
 rootwin.grid_propagate(False)
 
+class FileEventHandler():
+  def __init__(self, path):
+    self.path = path
+    self.documents = dict()
+
+    self.event_handler = watchevents.PatternMatchingEventHandler(patterns=["*.png"], ignore_directories=True)
+    self.observer = Observer()
+    self.event_handler.on_modified = self.on_modified
+    self.last_file = ""
+
+    self.observer.schedule(self.event_handler, self.path, recursive=False)
+    self.observer.start()
+
+  def on_modified(self, event):
+    # Seems to get fired twice. Luckily the game always changes filename for us. So make sure that happens.
+    if event.src_path == self.last_file: return
+    self.last_file = event.src_path
+    if not folders_ok:
+      print("Missed opportunity for file copy. Check folders are valid.")
+      return
+    dispname = datetime.now().isoformat("_","milliseconds").replace(":","-") + ".png"
+    outfile = config["d_directory"] + "\\" + dispname
+    print("New picture detected: {} -> {}".format(event.src_path, outfile))
+    shutil.copy2(event.src_path, outfile)
+    disp_pic.config(text="Copied last picture to {}".format(dispname))
+
+  def stop(self):
+    self.observer.stop()
+    self.observer.join()
+
+filewatch = None
+folders_ok = os.path.isdir(config["s_directory"]) and os.path.isdir(config["d_directory"])
+if str(config["copy_pictures"]) == "1" and folders_ok:
+  filewatch = FileEventHandler(config["s_directory"])
+  print("Watching for new PNGs enabled in startup. Folder: {}".format(config["s_directory"]))
+  disp_pic.config(text="Watching the game folder for new pictures...")
 rootwin.mainloop()
