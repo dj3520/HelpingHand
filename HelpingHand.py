@@ -18,7 +18,7 @@ tabs.add(diagnosis, text="Diagnosis")
 display_texts = {
   "EMF Level 5": "All lights on the EMP will illuminate.",
   "Spirit Box": "Spirit Box responds to your questions.",
-  "Fingerprints": "Find on objects the ghost has touched using the UV light. Handprints and footprints also count.",
+  "Fingerprints": "Find on objects the ghost has touched using the UV light. Handprints count but footprints do not.",
   "Ghost Orb": "With night vision enabled on a camera, saw what might be mistaken as a fly. (Flies are extinct in-game)",
   "Ghost Writing": "The blank book you brought in now has pretty doodles.",
   "Freezing Temperatures": "Below 0 degrees Celsius or 32 degrees Fahrenheit. Cold enough to see your breath."
