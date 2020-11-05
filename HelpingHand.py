@@ -8,7 +8,7 @@ from watchdog.observers import Observer
 from watchdog import events as watchevents
 
 rootwin = tk.Tk()
-rootwin.title("HelpingHand - for Phasmophobia")
+rootwin.title("HelpingHand - for Phasmophobia ~ by DJ3520")
 
 tabs = ttk.Notebook(rootwin)
 tabs.pack()
