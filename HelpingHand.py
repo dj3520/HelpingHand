@@ -207,7 +207,12 @@ class FileEventHandler():
     dispname = datetime.now().isoformat("_","milliseconds").replace(":","-") + ".png"
     outfile = config["d_directory"] + "\\" + dispname
     print("New picture detected: {} -> {}".format(event.src_path, outfile))
-    shutil.copy2(event.src_path, outfile)
+    try:
+      shutil.copy2(event.src_path, outfile)
+    except Exception as e:
+      disp_pic.config(text="Error: {}".format(e))
+      print("Picture copy error: {}".format(e))
+      return
     disp_pic.config(text="Copied last picture to {}".format(dispname))
 
   def stop(self):
