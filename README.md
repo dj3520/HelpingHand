@@ -1,4 +1,5 @@
 # HelpingHand
+[Grab yourself a copy on the releases page.](https://github.com/dj3520/HelpingHand/releases)
 
 Helper tool for Phasmophobia. Check the boxes when you find evidence, and the possibilities list will shrink.
 
