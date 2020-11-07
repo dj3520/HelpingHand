@@ -8,7 +8,7 @@ from watchdog.observers import Observer
 from watchdog import events as watchevents
 
 rootwin = tk.Tk()
-rootwin.title("HelpingHand - for Phasmophobia ~ by DJ3520")
+rootwin.title("HelpingHand - for Phasmophobia * by DJ3520 [V:1.0.2 ~ Novel Nickpickings Noted]")
 
 tabs = ttk.Notebook(rootwin)
 tabs.pack()
@@ -16,29 +16,29 @@ diagnosis = tk.Frame(tabs)
 tabs.add(diagnosis, text="Diagnosis")
 
 display_texts = {
-  "EMF Level 5": "All lights on the EMP will illuminate.",
-  "Spirit Box": "Spirit Box responds to your questions.",
-  "Fingerprints": "Find on objects the ghost has touched using the UV light. Handprints count but footprints do not.",
-  "Ghost Orb": "With night vision enabled on a camera, saw what might be mistaken as a fly. (Flies are extinct in-game)",
-  "Ghost Writing": "The blank book you brought in now has pretty doodles.",
-  "Freezing Temperatures": "Below 0 degrees Celsius or 32 degrees Fahrenheit. Cold enough to see your breath."
+  "EMF Level 5": "All lights on the EMP will illuminate. 5th and final light is red.",
+  "Spirit Box": "Spirit Box responds to your questions. What is said will show on the display.",
+  "Fingerprints": "Or handprints. BUT NOT FOOTPRINTS. Shine the UV flashlight on objects the ghost has touched, such as doors or light switches.",
+  "Ghost Orb": "With night vision enabled on a camera, saw what might be mistaken as a spec of dust or a fly. (Tip: Flies are extinct in-game)",
+  "Ghost Writing": "The blank book you brought with you now has pretty drawings you don't remember anyone putting there.",
+  "Freezing Temperatures": "Below 0C or 32F degrees. Cold enough to see your breath. Chilling!"
 }
 
 # Bitmap: EMF5, Box, Prints, Orbs, Writing, Temps
 
 possibilities = {
-  "Spirit": ["011010", "Can be delayed with smudge sticks."],
-  "Shade": ["100110", "Shy, hunt lone players. Sticking together prevents death but also activity."],
-  "Poltergeist": ["011100", 'Moves objects, considered "noisy", useless in a room with no items.'],
+  "Spirit": ["011010", "Smudge sticks are more effective against these. Patience is also required to identify a spirit."],
+  "Shade": ["100110", "Shy, hunt lone players. Sticking together reduces chances of death but also reduces activity."],
+  "Poltergeist": ["011100", 'Moves objects, even multiple at once. Considered "noisy", useless in a room with no items.'],
   "Jinn": ["110100", "Territorial, only attack when threatened. High speed travel unless power is cut."],
-  "Mare": ["010101", "Powerful in the dark. Will want to turn off lights, or even power."],
+  "Mare": ["010101", "Powerful in the dark, weak in the light. Will want to turn off lights, or even power."],
   "Phantom": ["100101", "Slow. When viewed directly will take large amount of sanity. Taking its picture will make it disappear."],
-  "Wraith": ["011001", "Relentless hunter. Can fly and go through walls. Salt is toxic and will prevent attacks."],
+  "Wraith": ["011001", "Relentless hunter. Can fly and go through walls. Salt will temporarily lower it's aggression before making it worse afterwords."],
   "Banshee": ["101001", "Focuses on one player at a time. Crucifixes have a larger effective range."],
   "Revenant": ["101010", "Faster while hunting, slower while players are hiding."],
-  "Yurei": ["000111", "Strong effect on sanity. Weak to smudge sticks."],
-  "Oni": ["110010", "Moves quicker while players are near. Means more activity but also more dangerous."],
-  "Demon": ["010011", "Highly aggressive. Crucifix is recommended. No penalty to sanity when using Ouiji board and it cooperates."],
+  "Yurei": ["000111", "Strong effect on sanity. Using smudge sticks might trap it in it's current room."],
+  "Oni": ["110010", "More active while players are near. Able to throw objects with great speed."],
+  "Demon": ["010011", "Highly aggressive. Crucifix is recommended. No penalty to sanity if it cooperates with you using the Ouiji board."],
 }
 
 signs = tk.LabelFrame(diagnosis, text="Evidence")
@@ -92,7 +92,7 @@ def reset_evidence():
   for i in chkvars:
     i.set(0)
 
-b = tk.Button(signs, text="Reset", command=reset_evidence)
+b = tk.Button(signs, text="Clear", command=reset_evidence)
 b.grid(sticky=tk.W)
 
 configf = configparser.ConfigParser(defaults={"s_directory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Phasmophobia", "d_Directory": os.path.expanduser('~') + "\\Pictures", "copy_pictures": "0"})
@@ -136,15 +136,27 @@ def save_config(config):
   for i in configf.items(section="DEFAULT"):
     print("New config: {}".format(i))
 
-  disp_pic.config(text="Game or destination folder invalid.")
-  if not os.path.isdir(config["s_directory"]):
+  test = 3
+  if os.path.isdir(config["s_directory"]): test -= 2
+  if os.path.isdir(config["d_directory"]): test -= 1
+  if config["d_directory"] == config["s_directory"]: test = 4
+  print("Value save test result: {}".format(test))
+
+  if test == 4:
+    disp_pic.config(text="Game and destination folders are the same. This could cause a pretty nasty crash.")
+    folders_ok = 0
+  elif test == 3:
+    disp_pic.config(text="Game and destination folders invalid.")
+    folders_ok = 0
+  elif test == 2:
     disp_pic.config(text="Game folder invalid.")
     folders_ok = 0
-  if not os.path.isdir(config["d_directory"]):
+  elif test == 1:
     disp_pic.config(text="Destination folder invalid.")
     folders_ok = 0
   else:
     folders_ok = 1
+    disp_pic.config(text="New configuration saved.")
 
 def choose_s():
   choose_which("s")
@@ -220,9 +232,10 @@ class FileEventHandler():
     self.observer.join()
 
 filewatch = None
-folders_ok = os.path.isdir(config["s_directory"]) and os.path.isdir(config["d_directory"])
-if str(config["copy_pictures"]) == "1" and folders_ok:
-  filewatch = FileEventHandler(config["s_directory"])
-  print("Watching for new PNGs enabled in startup. Folder: {}".format(config["s_directory"]))
-  disp_pic.config(text="Watching the game folder for new pictures...")
+if str(config["copy_pictures"]) == "1":
+  save_config(config)
+  if folders_ok == 1:
+    filewatch = FileEventHandler(config["s_directory"])
+    print("Watching for new PNGs enabled in startup. Folder: {}".format(config["s_directory"]))
+    disp_pic.config(text="Watching the game folder for new pictures...")
 rootwin.mainloop()
