@@ -38,7 +38,7 @@ possibilities = {
   "Revenant": ["101010", "Faster while hunting, slower while players are hiding."],
   "Yurei": ["000111", "Strong effect on sanity. Using smudge sticks might trap it in it's current room."],
   "Oni": ["110010", "More active while players are near. Able to throw objects with great speed."],
-  "Demon": ["010011", "Highly aggressive. Crucifix is recommended. No penalty to sanity if it cooperates with you using the Ouiji board."],
+  "Demon": ["010011", "Highly aggressive. Crucifix is recommended. No penalty to sanity if it cooperates with you using the Ouija board."],
 }
 
 signs = tk.LabelFrame(diagnosis, text="Evidence")
