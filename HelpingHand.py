@@ -16,13 +16,13 @@ diagnosis = tk.Frame(tabs)
 tabs.add(diagnosis, text="Diagnosis")
 
 display_texts = {
-  "EMF Level 5": "All lights on the EMF will illuminate. 5th and final light is red.",
-  "Fingerprints": "Or handprints. BUT NOT FOOTPRINTS. Shine the UV flashlight on objects the ghost has touched, such as doors, light switches, etc.",
-  "Ghost Writing": "The blank book you brought with you now has pretty drawings you don't remember anyone putting there.",
-  "Freezing Temperatures": "Below 0C or 32F degrees. Cold enough to see your breath. Chilling!",
-  "DOTS": "Plop this laser light show down and maybe they'll be a human shape run through it.",
-  "Ghost Orb": "With night vision enabled on a camera, saw what might be mistaken as a spec of dust or a fly. (Tip: Flies are extinct in-game, and snow only goes down)",
-  "Spirit Box": "Spirit Box responds to your questions. Make sure the X or Ghost icon lights up."
+  "EMF Level 5":            "All lights on the EMF will illuminate. 5th and final light is red.",
+  "Fingerprints":           "Or handprints. BUT NOT FOOTPRINTS. Shine the UV flashlight on objects the ghost has touched, such as doors, light switches, etc.",
+  "Ghost Writing":          "The blank book you brought with you now has pretty drawings you don't remember anyone putting there.",
+  "Freezing Temperatures":  "Below 0C or 32F degrees. Cold enough to see your breath. Chilling!",
+  "DOTS":                   "Plop this laser light show down and maybe they'll be a human shape run through it.",
+  "Ghost Orb":              "With night vision enabled on a camera, saw what might be mistaken as a spec of dust or a fly. (Tip: Flies are extinct in-game, and snow only goes down)",
+  "Spirit Box":             "Spirit Box responds to your questions. Make sure the X or Ghost icon lights up."
 }
 
 # Bitmap: EMF5, Fingerprints, Writing, Temps, DOTS, Orbs, Spirit Box
