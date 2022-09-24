@@ -29,21 +29,21 @@ display_texts = {
 # 1 = required TRUE, 0 = required FALSE
 
 possibilities = {
-  "Spirit":      ["1010001", "If smudge stick used while not hunting, cannot hunt until 120 seconds pass (2 minutes)"],
+  "Spirit":      ["1010001", "If smudge stick used while not hunting, cannot hunt until 180 seconds pass (3 minutes)"],
   "Poltergeist": ["0110001", "Can throw more than one object at a time even when lights in room are on."],
   "Mare":        ["0010011", "Never turns lights on. Small chance of turning lights off right after turning them on."],
   "Demon":       ["0111000", "Hunts early and more often. Can hunt even at 100% sanity. Crucifix range increased."],
-  "Yokai":       ["0000111", "Speaking near ghost increases chances of hunt."],
-  "Myling":      ["1110000", "Footprints are quieter and muffled when far during hunt."],
+  "Yokai":       ["0000111", "Can hunt with more sanity when players speak nearby."],
+  "Myling":      ["1110000", "Can only hear footsteps within range of tools bugging out. Usually footsteps can be heard from farther away."],
   "Raiju":       ["1000110", "During hunting, active electronics boost speed (including when held.)"],
   "Moroi":       ["0011001", "Can curse you through spirit box which will constantly drain sanity when inside house."],
   #
   "Wraith":      ["1000101", "Never leaves UV footprints."],
   "Banshee":     ["0100110", "More likely to sing or hum during ghost events. Rarely wails through microphone."],
   "Revenant":    ["0011010", "During a hunt, slowly wanders unless chasing. Fast when chasing."],
-  "Yueri":       ["0001110", ""],
+  "Yueri":       ["0001110", "Cannot leave room for 90 seconds after successfully using smudge sticks. Only ghost that can move the entrance door when not hunting."],
   "Hantu":       ["0101010", "During hunt, becomes faster in colder rooms and slower in warmer rooms. In freezing rooms might see breath."],
-  "Onryo":       ["0001011", "Chance to hunt after blowing out a candle. Chance increases for each death."],
+  "Onryo":       ["0001011", "Chance to hunt after blowing out a candle. Chance increases for each death. However when ghost is close, blowing out a candle prevents hunt."],
   "Obake":       ["1100010", "Fingerprints are more rare, last a shorter time, but can be unique (a 6th finger for example.)"],
   "Deogen":      ["0010101", "Always knows your location (hiding won't save you) but slow enough to outrun."],
   #
@@ -53,7 +53,7 @@ possibilities = {
   "Oni":         ["1001100", "Throws items with more force (not faster just stronger.) Never manifests as ball of smoke."],
   "Goryo":       ["1100100", "Can only see DOTS through cameras. Will not do DOTS if a player is in the same room."],
   "Twins":       ["1001001", "Pretends to be in another room (can only do certain things from that fake location.) Can begin hunt from either location."],
-  "Mimic":       ["0101001", "Can spawn orbs but isn't part of required evidence. Imitates  other ghosts (but can switch to others, including itself!)"],
+  "Mimic":       ["0101001", "Always spawns orbs but isn't part of required evidence. Imitates other ghosts (but can switch to others, including itself!)"],
   "Thaye":       ["0010110", "Starts strong and fast, but gets weaker and slower the longer players are in the same room."],
 }
 
