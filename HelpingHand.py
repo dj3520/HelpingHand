@@ -16,29 +16,45 @@ diagnosis = tk.Frame(tabs)
 tabs.add(diagnosis, text="Diagnosis")
 
 display_texts = {
-  "EMF Level 5": "All lights on the EMP will illuminate. 5th and final light is red.",
-  "Spirit Box": "Spirit Box responds to your questions. What is said will show on the display.",
-  "Fingerprints": "Or handprints. BUT NOT FOOTPRINTS. Shine the UV flashlight on objects the ghost has touched, such as doors or light switches.",
-  "Ghost Orb": "With night vision enabled on a camera, saw what might be mistaken as a spec of dust or a fly. (Tip: Flies are extinct in-game)",
+  "EMF Level 5": "All lights on the EMF will illuminate. 5th and final light is red.",
+  "Fingerprints": "Or handprints. BUT NOT FOOTPRINTS. Shine the UV flashlight on objects the ghost has touched, such as doors, light switches, etc.",
   "Ghost Writing": "The blank book you brought with you now has pretty drawings you don't remember anyone putting there.",
-  "Freezing Temperatures": "Below 0C or 32F degrees. Cold enough to see your breath. Chilling!"
+  "Freezing Temperatures": "Below 0C or 32F degrees. Cold enough to see your breath. Chilling!",
+  "DOTS": "Plop this laser light show down and maybe they'll be a human shape run through it.",
+  "Ghost Orb": "With night vision enabled on a camera, saw what might be mistaken as a spec of dust or a fly. (Tip: Flies are extinct in-game, and snow only goes down)",
+  "Spirit Box": "Spirit Box responds to your questions. Make sure the X or Ghost icon lights up."
 }
 
-# Bitmap: EMF5, Box, Prints, Orbs, Writing, Temps
+# Bitmap: EMF5, Fingerprints, Writing, Temps, DOTS, Orbs, Spirit Box
+# 1 = required TRUE, 0 = required FALSE
 
 possibilities = {
-  "Spirit": ["011010", "Smudge sticks are more effective against these. Patience is also required to identify a spirit."],
-  "Shade": ["100110", "Shy, hunt lone players. Sticking together reduces chances of death but also reduces activity."],
-  "Poltergeist": ["011100", 'Moves objects, even multiple at once. Considered "noisy", useless in a room with no items.'],
-  "Jinn": ["110100", "Territorial, only attack when threatened. High speed travel unless power is cut."],
-  "Mare": ["010101", "Powerful in the dark, weak in the light. Will want to turn off lights, or even power."],
-  "Phantom": ["100101", "Slow. When viewed directly will take large amount of sanity. Taking its picture will make it disappear."],
-  "Wraith": ["011001", "Relentless hunter. Can fly and go through walls. Salt will temporarily lower it's aggression before making it worse afterwords."],
-  "Banshee": ["101001", "Focuses on one player at a time. Crucifixes have a larger effective range."],
-  "Revenant": ["101010", "Faster while hunting, slower while players are hiding."],
-  "Yurei": ["000111", "Strong effect on sanity. Using smudge sticks might trap it in it's current room."],
-  "Oni": ["110010", "More active while players are near. Able to throw objects with great speed."],
-  "Demon": ["010011", "Highly aggressive. Crucifix is recommended. No penalty to sanity if it cooperates with you using the Ouija board."],
+  "Spirit":      ["1010001", "If smudge stick used while not hunting, cannot hunt until 120 seconds pass (2 minutes)"],
+  "Poltergeist": ["0110001", "Can throw more than one object at a time even when lights in room are on."],
+  "Mare":        ["0010011", "Never turns lights on. Small chance of turning lights off right after turning them on."],
+  "Demon":       ["0111000", "Hunts early and more often. Can hunt even at 100% sanity. Crucifix range increased."],
+  "Yokai":       ["0000111", "Speaking near ghost increases chances of hunt."],
+  "Myling":      ["1110000", "Footprints are quieter and muffled when far during hunt."],
+  "Raiju":       ["1000110", "During hunting, active electronics boost speed (including when held.)"],
+  "Moroi":       ["0011001", "Can curse you through spirit box which will constantly drain sanity when inside house."],
+  #
+  "Wraith":      ["1000101", "Never leaves UV footprints."],
+  "Banshee":     ["0100110", "More likely to sing or hum during ghost events. Rarely wails through microphone."],
+  "Revenant":    ["0011010", "During a hunt, slowly wanders unless chasing. Fast when chasing."],
+  "Yueri":       ["0001110", ""],
+  "Hantu":       ["0101010", "During hunt, becomes faster in colder rooms and slower in warmer rooms. In freezing rooms might see breath."],
+  "Onryo":       ["0001011", "Chance to hunt after blowing out a candle. Chance increases for each death."],
+  "Obake":       ["1100010", "Fingerprints are more rare, last a shorter time, but can be unique (a 6th finger for example.)"],
+  "Deogen":      ["0010101", "Always knows your location (hiding won't save you) but slow enough to outrun."],
+  #
+  "Phantom":     ["0100101", "Disappears if photo taken during ghost event. (event still continues)"],
+  "Jinn":        ["1101000", "Never turns power off."],
+  "Shade":       ["1011000", "Only able to do a small set of things when a player is in the same room. Makes events more rare."],
+  "Oni":         ["1001100", "Throws items with more force (not faster just stronger.) Never manifests as ball of smoke."],
+  "Goryo":       ["1100100", "Can only see DOTS through cameras. Will not do DOTS if a player is in the same room."],
+  "Twins":       ["1001001", "Pretends to be in another room (can only do certain things from that fake location.) Can begin hunt from either location."],
+  "Mimic":       ["0101001", "Can spawn orbs but isn't part of required evidence. Imitates  other ghosts (but can switch to others, including itself!)"],
+  "Thaye":       ["0010110", "Starts strong and fast, but gets weaker and slower the longer players are in the same room."],
 }
 
 signs = tk.LabelFrame(diagnosis, text="Evidence")
@@ -217,7 +233,7 @@ class FileEventHandler():
       print("Missed opportunity for file copy. Check folders are valid.")
       return
     dispname = datetime.now().isoformat("_","milliseconds").replace(":","-") + ".png"
-    outfile = config["d_directory"] + "\\" + dispname
+    outfile = config["d_directory"] + "/" + dispname
     print("New picture detected: {} -> {}".format(event.src_path, outfile))
     try:
       shutil.copy2(event.src_path, outfile)
