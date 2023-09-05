@@ -1,0 +1,9 @@
+.idea
+git_ignore
+__pycache__
+build
+dist
+build.bat
+*.spec
+*.lnk
+*.ini
