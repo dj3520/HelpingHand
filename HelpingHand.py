@@ -205,7 +205,7 @@ def set_pictures_active():
     if not filewatch is None:
       filewatch.stop()
 
-tk.Label(pictures, text="Pictures taken by the in-game photo camera can be copied to a folder of your choice.\nThis program must be open for this to occur.").pack()
+tk.Label(pictures, text="Pictures taken by the in-game photo camera can be saved to a folder of your choice.\nThis program must be open for this to occur.").pack()
 pic_checkbox = tk.IntVar()
 pic_checkbox.set(int(config["copy_pictures"]))
 tk.Checkbutton(pictures, text="Enable this!", command=set_pictures_active, variable=pic_checkbox).pack()
