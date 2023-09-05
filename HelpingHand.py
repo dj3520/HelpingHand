@@ -61,6 +61,10 @@ signs = tk.LabelFrame(diagnosis, text="Evidence")
 signs.grid(row=0)
 type_list = tk.LabelFrame(diagnosis, text="Possibilities")
 label_dictionary = {}
+
+# Logic and things starts at this point.
+
+# Make GUI elements based on possibilities.
 for k, v in possibilities.items():
   label_dictionary[k] = [None, None]
   label_dictionary[k][0] = tk.Label(type_list, text=k)
@@ -94,6 +98,7 @@ def vartrace(name, indx, op):
         i.grid_forget()
     row += 1
 
+# Make GUI elements based on evidences
 chkvars = []
 for k, v in display_texts.items():
   newvar = tk.IntVar()
@@ -111,6 +116,9 @@ def reset_evidence():
 b = tk.Button(signs, text="Clear", command=reset_evidence)
 b.grid(sticky=tk.W)
 
+# Pictures tab section
+
+# Load settings
 configf = configparser.ConfigParser(defaults={"s_directory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Phasmophobia", "d_Directory": os.path.expanduser('~') + "\\Pictures", "copy_pictures": "0"})
 if os.path.isfile("settings.ini"):
   configf.read("settings.ini")
@@ -206,12 +214,16 @@ tk.Button(pictures, text="Select destination folder.", command=choose_d).pack()
 disp_pic.pack()
 
 # Changing amounts of possibilities causes window size changes. Not the nicest things.
+# So after we've done all the setup for the GUI, lock down the size.
 rootwin.resizable(tk.FALSE, tk.FALSE)
+# Ok we're all done with setup. Make it appear.
 rootwin.update()
 
+# Don't resize things based on their content. Leave them the same size.
 type_list.grid_propagate(False)
 rootwin.grid_propagate(False)
 
+# Actual work with pictures happens here.
 class FileEventHandler():
   def __init__(self, path):
     self.path = path
@@ -249,9 +261,11 @@ class FileEventHandler():
 
 filewatch = None
 if str(config["copy_pictures"]) == "1":
-  save_config(config)
+  save_config(config) # Sets folders_ok
   if folders_ok == 1:
     filewatch = FileEventHandler(config["s_directory"])
     print("Watching for new PNGs enabled in startup. Folder: {}".format(config["s_directory"]))
     disp_pic.config(text="Watching the game folder for new pictures...")
+
+# Let the GUI take control.
 rootwin.mainloop()
