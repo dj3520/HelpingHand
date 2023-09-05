@@ -16,43 +16,43 @@ diagnosis = tk.Frame(tabs)
 tabs.add(diagnosis, text="Diagnosis")
 
 display_texts = {
-  "EMF Level 5":            "All lights on the EMF will illuminate. 5th and final light is red.",
-  "Fingerprints":           "Or handprints. BUT NOT FOOTPRINTS. Shine the UV flashlight on objects the ghost has touched, such as doors, light switches, etc.",
-  "Ghost Writing":          "The blank book you brought with you now has pretty drawings you don't remember anyone putting there.",
-  "Freezing Temperatures":  "Below 0C or 32F degrees. Cold enough to see your breath. Chilling!",
-  "DOTS":                   "Plop this laser light show down and maybe they'll be a human shape run through it.",
+  "EMF Level 5":            "Most ghosts leave a small level of EMF while doing interactions. Some ghosts max out the EMF device when doing interactions.",
+  "Ultraviolet":            "Includes fingerprints and Footprints. Does not last long. Shine the UV device on objects the ghost has touched, such as doors,windows, light switches, etc.",
+  "Ghost Writing":          "The blank book you brought with you now has pretty drawings you don't remember anyone putting there. Ghost can throw the book if not evidence.",
+  "Freezing Temperatures":  "Below 0C or 32F degrees. Seeing cold breath is no longer reliable, it starts before the freezing temps begin. Weather plays an effect on resting temperature of map.",
+  "DOTS":                   "A laser grid that may reveal a manifesting human shape.",
   "Ghost Orb":              "With night vision enabled on a camera, saw what might be mistaken as a spec of dust or a fly. (Tip: Flies are extinct in-game, and snow only goes down)",
-  "Spirit Box":             "Spirit Box responds to your questions. Make sure the X or Ghost icon lights up."
+  "Spirit Box":             "Spirit Box responds to your questions. Activity tends to increase while using the spirit box (most ghosts don't like your voice)."
 }
 
-# Bitmap: EMF5, Fingerprints, Writing, Temps, DOTS, Orbs, Spirit Box
+# Bitmap: EMF5, Ultraviolet, Writing, Temps, DOTS, Orbs, Spirit Box
 # 1 = required TRUE, 0 = required FALSE
 
 possibilities = {
   "Spirit":      ["1010001", "If smudge stick used while not hunting, cannot hunt until 180 seconds pass (3 minutes)"],
-  "Poltergeist": ["0110001", "Can throw more than one object at a time even when lights in room are on."],
-  "Mare":        ["0010011", "Never turns lights on. Small chance of turning lights off right after turning them on."],
+  "Poltergeist": ["0110001", "Can throw more than one object at a time. Will throw anything not nailed down in a hunt (Causes a mini tornado)."],
+  "Mare":        ["0010011", "Never turns lights on. Hunts at 60% sanity with lights off and 40% sanity if lights in the ghost room are on. Can roam to a dark room to start hunt."],
   "Demon":       ["0111000", "Hunts early and more often. Can hunt even at 100% sanity. Crucifix range increased."],
-  "Yokai":       ["0000111", "Can hunt with more sanity when players speak nearby."],
+  "Yokai":       ["0000111", "Can hunt with more sanity when players speak nearby. Has a smaller range to sense players during a hunt than other ghosts."],
   "Myling":      ["1110000", "Can only hear footsteps within range of tools bugging out. Usually footsteps can be heard from farther away."],
   "Raiju":       ["1000110", "During hunting, active electronics boost speed (including when held.)"],
   "Moroi":       ["0011001", "Can curse you through spirit box which will constantly drain sanity when inside house."],
   #
-  "Wraith":      ["1000101", "Never leaves UV footprints."],
-  "Banshee":     ["0100110", "More likely to sing or hum during ghost events. Rarely wails through microphone."],
+  "Wraith":      ["1000101", "Never steps in salt, even during a hunt."],
+  "Banshee":     ["0100110", "More likely to sing or hum during ghost events. Rarely wails through microphone. Picks one player as a target. Can roam to player and do events."],
   "Revenant":    ["0011010", "During a hunt, slowly wanders unless chasing. Fast when chasing."],
   "Yueri":       ["0001110", "Cannot leave room for 90 seconds after successfully using smudge sticks. Only ghost that can move the entrance door when not hunting."],
-  "Hantu":       ["0101010", "During hunt, becomes faster in colder rooms and slower in warmer rooms. In freezing rooms might see breath."],
-  "Onryo":       ["0001011", "Chance to hunt after blowing out a candle. Chance increases for each death. However when ghost is close, blowing out a candle prevents hunt."],
-  "Obake":       ["1100010", "Fingerprints are more rare, last a shorter time, but can be unique (a 6th finger for example.)"],
+  "Hantu":       ["0101010", "During hunt, becomes faster in colder rooms and slower in warmer rooms. It will be a fight for the breaker, they hate it being on."],
+  "Onryo":       ["0001011", "Uses Candles as a crucifix. Chance to hunt after blowing out a candle. Will roam to a room without a candle to hunt."],
+  "Obake":       ["1100010", "Can change ghost model briefly during a hunt. Fingerprints are more rare, last a shorter time, but can be unique (a 6th finger for example.)"],
   "Deogen":      ["0010101", "Always knows your location (hiding won't save you) but slow enough to outrun."],
   #
-  "Phantom":     ["0100101", "Disappears if photo taken during ghost event. (event still continues)"],
-  "Jinn":        ["1101000", "Never turns power off."],
-  "Shade":       ["1011000", "Only able to do a small set of things when a player is in the same room. Makes events more rare."],
+  "Phantom":     ["0100101", "Disappears if photo taken during ghost event. (event still continues) Sanity takes a hit if picture is not taken. "],
+  "Jinn":        ["1101000", "Ability is based on breaker being on. Never turns off power. Will speed up in a hunt until in range of the player."],
+  "Shade":       ["1011000", "Only able to do a small set of things when a player is in the same room. Makes events more rare. Hunts occur below 30% sanity (except cursed hunts)."],
   "Oni":         ["1001100", "Throws items with more force (not faster just stronger.) Never manifests as ball of smoke."],
   "Goryo":       ["1100100", "Can only see DOTS through cameras. Will not do DOTS if a player is in the same room."],
-  "Twins":       ["1001001", "Pretends to be in another room (can only do certain things from that fake location.) Can begin hunt from either location."],
+  "Twins":       ["1001001", "Can summon a decoy to another room. Can begin hunt from either location. hunts at two different speeds depending on whether real ghost or decoy."],
   "Mimic":       ["0101001", "Always spawns orbs but isn't part of required evidence. Imitates other ghosts (but can switch to others, including itself!)"],
   "Thaye":       ["0010110", "Starts strong and fast, but gets weaker and slower the longer players are in the same room."],
 }
